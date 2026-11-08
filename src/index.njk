@@ -1,0 +1,36 @@
+---
+layout: base.njk
+title: Book Notes
+---
+{%- set total = collections.books | length %}
+<header class="page-header">
+  <h1>My books</h1>
+  <p class="total" id="total" aria-live="polite">{{ total }} book{{ '' if total == 1 else 's' }}</p>
+</header>
+{%- if total %}
+<div class="toolbar">
+  <input id="search" class="search" type="search" placeholder="Search by title, author or tag" aria-label="Search books" autocomplete="off">
+  <div id="tags" class="chips tag-filter" role="group" aria-label="Filter by tag"></div>
+</div>
+<div class="shelf">
+{%- for book in collections.books %}
+  {%- set n = (collections.chapters | chaptersOf(book.fileSlug)) | length %}
+  <a class="card panel" href="{{ book.url | url }}" data-color="{{ book.data.color }}">
+    <h2>{{ book.data.displayTitle }}</h2>
+    <p class="author">{{ book.data.author }}</p>
+    <div class="card-foot">
+      <ul class="chips">
+{%- for t in book.data.tags or [] %}
+        <li class="chip">{{ t }}</li>
+{%- endfor %}
+      </ul>
+      <span class="count">{{ n }} chapter{{ '' if n == 1 else 's' }}</span>
+    </div>
+  </a>
+{%- endfor %}
+</div>
+<p id="empty" class="empty panel" hidden>No books match. Try another word, or choose All.</p>
+<script src="{{ '/js/home.js' | url }}" defer></script>
+{%- else %}
+<p class="empty panel">No books yet. Add a folder with an <code>index.md</code> inside <code>src/books</code>.</p>
+{%- endif %}

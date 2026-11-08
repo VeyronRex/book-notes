@@ -1,0 +1,40 @@
+---
+layout: base.njk
+frameWidth: read
+---
+{%- set book = collections.books | bookFor(page) %}
+{%- set around = (collections.chapters | chaptersOf(book.fileSlug)) | neighbors(page.url) %}
+<div data-color="{{ book.data.color }}">
+  <nav class="crumbs">
+    <a href="{{ '/' | url }}">← All books</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="{{ book.url | url }}">{{ book.data.displayTitle }}</a>
+  </nav>
+  <header class="page-header"><h1>{{ displayTitle }}</h1></header>
+  <div class="read">
+    <div class="toc-rail" id="toc-rail" hidden></div>
+    <article class="panel prose">
+{{ content | safe }}
+    </article>
+  </div>
+  <nav class="pager" aria-label="Previous and next chapter">
+{%- if around.prev %}
+    <a class="pager-link prev panel" href="{{ around.prev.url | url }}">
+      <span class="pager-label">← Previous</span>
+      <span class="pager-title">{{ around.prev.data.displayTitle }}</span>
+    </a>
+{%- endif %}
+{%- if around.next %}
+    <a class="pager-link next panel" href="{{ around.next.url | url }}">
+      <span class="pager-label">Next →</span>
+      <span class="pager-title">{{ around.next.data.displayTitle }}</span>
+    </a>
+{%- else %}
+    <a class="pager-link next panel" href="{{ book.url | url }}">
+      <span class="pager-label">Last chapter</span>
+      <span class="pager-title">Back to {{ book.data.displayTitle }}</span>
+    </a>
+{%- endif %}
+  </nav>
+  <script src="{{ '/js/toc.js' | url }}" defer></script>
+</div>

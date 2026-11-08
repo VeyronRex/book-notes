@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060a1f">
+  <title>{{ displayTitle or title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,600;1,400;1,600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+  <link rel="stylesheet" href="{{ '/css/style.css' | url }}">
+  <script src="{{ '/js/theme.js' | url }}" defer></script>
+</head>
+<body>
+  <div class="frame frame--{{ frameWidth or 'wide' }}">
+    <nav class="topbar">
+      <a class="brand" href="{{ '/' | url }}">Book Notes</a>
+      <button type="button" id="theme-toggle" class="chip chip-btn theme-toggle" aria-pressed="false">Dark mode</button>
+    </nav>
+    <main>
+{{ content | safe }}
+    </main>
+  </div>
+</body>
+</html>

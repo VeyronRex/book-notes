@@ -1,0 +1,45 @@
+---
+layout: base.njk
+frameWidth: mid
+---
+{%- set chapters = collections.chapters | chaptersOf(page.fileSlug) %}
+<div data-color="{{ color }}">
+  <nav class="crumbs"><a href="{{ '/' | url }}">← All books</a></nav>
+  <header class="page-header">
+    <div>
+      <h1>{{ displayTitle }}</h1>
+      <p class="meta">{{ author }}</p>
+      <ul class="chips">
+{%- for t in tags or [] %}
+        <li class="chip">{{ t }}</li>
+{%- endfor %}
+      </ul>
+    </div>
+    <p class="total">{{ chapters | length }} chapter{{ '' if (chapters | length) == 1 else 's' }}</p>
+  </header>
+{%- if content | trim %}
+  <section class="panel prose about">
+{{ content | safe }}
+  </section>
+{%- endif %}
+{%- if chapters | length %}
+  <ol class="chapters">
+{%- for ch in chapters %}
+    <li>
+      <a class="chapter panel" href="{{ ch.url | url }}">
+        <span class="num">{{ ch.data.chapterNo if ch.data.chapterNo is defined else loop.index }}</span>
+        <span class="chapter-text">
+          <span class="chapter-title">{{ ch.data.displayTitle }}</span>
+          {%- set note = ch | excerpt %}
+          {%- if note %}
+          <span class="chapter-note">{{ note }}</span>
+          {%- endif %}
+        </span>
+      </a>
+    </li>
+{%- endfor %}
+  </ol>
+{%- else %}
+  <p class="empty panel">No chapters yet. Add a file like <code>01-chapter-name.md</code> to this book's folder.</p>
+{%- endif %}
+</div>
